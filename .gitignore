@@ -1,0 +1,7 @@
+.vie/
+node_modules/
+dist/
+output/
+*.log
+.env
+.env.local
