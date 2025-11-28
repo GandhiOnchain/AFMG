@@ -240,14 +240,25 @@ const Index = () => {
             Connect Wallet
           </Button>
         ) : (
-          <Button
-            onClick={handleMint}
-            disabled={isMinting || hasMinted || isSoldOut || isLoadingSupply}
-            className="w-full"
-            size="lg"
-          >
-            {isMinting ? 'Minting...' : hasMinted ? 'Already Minted' : isSoldOut ? 'Sold Out' : 'Mint NFT'}
-          </Button>
+          <>
+            <div className="p-4 bg-card border border-border rounded-lg space-y-2">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-accent">Tell Me Why</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                This NFT represents your participation in a limited edition collection. 
+                Each piece is unique, verifiably scarce, and permanently recorded on-chain. 
+                By minting, you become part of an exclusive community of early adopters.
+              </p>
+            </div>
+            
+            <Button
+              onClick={handleMint}
+              disabled={isMinting || hasMinted || isSoldOut || isLoadingSupply}
+              className="w-full"
+              size="lg"
+            >
+              {isMinting ? 'Minting...' : hasMinted ? 'Already Minted' : isSoldOut ? 'Sold Out' : 'Mint NFT'}
+            </Button>
+          </>
         )}
 
         {mintStatus === 'success' && (
