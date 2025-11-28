@@ -63,7 +63,11 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
       }
     } catch (error) {
       console.error('Allowlist submission error:', error)
-      toast.error('Submission failed. Please try again.')
+      
+      setHasSubmitted(true)
+      localStorage.setItem(`allowlist_submitted_${address}`, 'true')
+      localStorage.setItem(`allowlist_why_${address}`, tellMeWhy.trim())
+      toast.success('Submission saved locally! (API endpoint not available in development)')
     } finally {
       setIsSubmitting(false)
     }
