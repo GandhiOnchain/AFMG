@@ -14,7 +14,7 @@ import { AllowlistSubmission } from '@/components/AllowlistSubmission'
 
 const NFT_ADDRESS = "0xc909a4e17e5d7f19eb9e91ae30d21a77c7f06074" as const
 const CHAIN_ID = 8453
-const MINT_START_DATE = new Date('2025-12-01T00:00:00Z')
+const MINT_START_DATE = new Date('2026-01-19T00:00:00Z')
 
 const Index = () => {
   const { address, connect, isConnected } = useWallet()
