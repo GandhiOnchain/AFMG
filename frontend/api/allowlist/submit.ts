@@ -42,10 +42,6 @@ export default async function handler(
       return res.status(400).json({ error: 'Farcaster username is required' })
     }
 
-    if (!tellMeWhy || typeof tellMeWhy !== 'string' || tellMeWhy.trim().length === 0) {
-      return res.status(400).json({ error: 'Tell me why is required' })
-    }
-
     const existingSubmission = submissions.find(
       s => s.address.toLowerCase() === address.toLowerCase()
     )
@@ -57,7 +53,7 @@ export default async function handler(
     const newSubmission: Submission = {
       address: address.toLowerCase(),
       farcasterUsername: farcasterUsername.trim(),
-      tellMeWhy: tellMeWhy.trim(),
+      tellMeWhy: tellMeWhy ? tellMeWhy.trim() : '',
       timestamp: timestamp || new Date().toISOString(),
     }
 

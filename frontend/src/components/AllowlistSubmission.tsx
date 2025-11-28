@@ -35,11 +35,6 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
       return
     }
 
-    if (!tellMeWhy.trim()) {
-      toast.error('Please tell us why you want this NFT')
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
@@ -191,7 +186,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
               
               <div className="space-y-2">
                 <label htmlFor="tellMeWhy" className="text-sm font-medium">
-                  Tell me why you want this NFT
+                  Tell me why you want this NFT <span className="text-muted-foreground font-normal">(not required if I follow you)</span>
                 </label>
                 <Textarea
                   id="tellMeWhy"
@@ -208,7 +203,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
               
               <Button
                 onClick={handleSubmit}
-                disabled={isSubmitting || !farcasterUsername.trim() || !tellMeWhy.trim()}
+                disabled={isSubmitting || !farcasterUsername.trim()}
                 className="w-full"
                 size="lg"
               >
