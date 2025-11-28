@@ -1,9 +1,12 @@
 {
   "frame": {
     "version": "1",
-    "name": "AFM-G Mint",
+    "name": "AFMG Allowlist",
     "iconUrl": "https://afmg.vercel.app/placeholder.svg",
     "homeUrl": "https://afmg.vercel.app/",
-    "imageUrl": "https://afmg.vercel.app/placeholder.svg"
+    "imageUrl": "https://afmg.vercel.app/placeholder.svg",
+    "buttonTitle": "Join Allowlist",
+    "splashImageUrl": "https://afmg.vercel.app/placeholder.svg",
+    "splashBackgroundColor": "#000000"
   }
 }
