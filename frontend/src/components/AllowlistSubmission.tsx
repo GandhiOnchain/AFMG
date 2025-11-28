@@ -15,6 +15,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
   const { address, connect, isConnected } = useWallet()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
+  const [fid, setFid] = useState('')
   const [tellMeWhy, setTellMeWhy] = useState('')
 
   useState(() => {
@@ -26,6 +27,11 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
   const handleSubmit = async () => {
     if (!address) {
       toast.error('Please connect your wallet first')
+      return
+    }
+
+    if (!fid.trim()) {
+      toast.error('Please enter your Farcaster ID')
       return
     }
 
@@ -44,6 +50,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
         },
         body: JSON.stringify({
           address,
+          fid: fid.trim(),
           tellMeWhy: tellMeWhy.trim(),
           timestamp: new Date().toISOString(),
         }),
@@ -66,6 +73,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
       
       setHasSubmitted(true)
       localStorage.setItem(`allowlist_submitted_${address}`, 'true')
+      localStorage.setItem(`allowlist_fid_${address}`, fid.trim())
       localStorage.setItem(`allowlist_why_${address}`, tellMeWhy.trim())
       toast.success('Submission saved locally! (API endpoint not available in development)')
     } finally {
@@ -169,6 +177,19 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
               </div>
               
               <div className="space-y-2">
+                <label htmlFor="fid" className="text-sm font-medium">
+                  Farcaster ID (FID)
+                </label>
+                <Input
+                  id="fid"
+                  type="number"
+                  placeholder="Enter your FID"
+                  value={fid}
+                  onChange={(e) => setFid(e.target.value)}
+                />
+              </div>
+              
+              <div className="space-y-2">
                 <label htmlFor="tellMeWhy" className="text-sm font-medium">
                   Tell me why you want this NFT
                 </label>
@@ -187,7 +208,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
               
               <Button
                 onClick={handleSubmit}
-                disabled={isSubmitting || !tellMeWhy.trim()}
+                disabled={isSubmitting || !fid.trim() || !tellMeWhy.trim()}
                 className="w-full"
                 size="lg"
               >
