@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { useWallet } from '@/hooks/useWallet'
 import { toast } from 'sonner'
 
@@ -14,6 +15,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
   const { address, connect, isConnected } = useWallet()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
+  const [tellMeWhy, setTellMeWhy] = useState('')
 
   useState(() => {
     if (address && localStorage.getItem(`allowlist_submitted_${address}`)) {
@@ -27,6 +29,11 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
       return
     }
 
+    if (!tellMeWhy.trim()) {
+      toast.error('Please tell us why you want this NFT')
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -37,6 +44,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
         },
         body: JSON.stringify({
           address,
+          tellMeWhy: tellMeWhy.trim(),
           timestamp: new Date().toISOString(),
         }),
       })
@@ -155,9 +163,27 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
                   {address}
                 </p>
               </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="tellMeWhy" className="text-sm font-medium">
+                  Tell me why you want this NFT
+                </label>
+                <Textarea
+                  id="tellMeWhy"
+                  placeholder="Share your reason for wanting to be part of this collection..."
+                  value={tellMeWhy}
+                  onChange={(e) => setTellMeWhy(e.target.value)}
+                  className="min-h-[100px] resize-none"
+                  maxLength={500}
+                />
+                <p className="text-xs text-muted-foreground text-right">
+                  {tellMeWhy.length}/500
+                </p>
+              </div>
+              
               <Button
                 onClick={handleSubmit}
-                disabled={isSubmitting}
+                disabled={isSubmitting || !tellMeWhy.trim()}
                 className="w-full"
                 size="lg"
               >

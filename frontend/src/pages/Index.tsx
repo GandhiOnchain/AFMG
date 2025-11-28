@@ -14,7 +14,7 @@ import { AllowlistSubmission } from '@/components/AllowlistSubmission'
 
 const NFT_ADDRESS = "0xc909a4e17e5d7f19eb9e91ae30d21a77c7f06074" as const
 const CHAIN_ID = 8453
-const MINT_START_DATE = new Date('2025-11-01T00:00:00Z')
+const MINT_START_DATE = new Date('2025-12-01T00:00:00Z')
 
 const Index = () => {
   const { address, connect, isConnected } = useWallet()
@@ -240,25 +240,14 @@ const Index = () => {
             Connect Wallet
           </Button>
         ) : (
-          <>
-            <div className="p-4 bg-card border border-border rounded-lg space-y-2">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-accent">Tell Me Why</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                This NFT represents your participation in a limited edition collection. 
-                Each piece is unique, verifiably scarce, and permanently recorded on-chain. 
-                By minting, you become part of an exclusive community of early adopters.
-              </p>
-            </div>
-            
-            <Button
-              onClick={handleMint}
-              disabled={isMinting || hasMinted || isSoldOut || isLoadingSupply}
-              className="w-full"
-              size="lg"
-            >
-              {isMinting ? 'Minting...' : hasMinted ? 'Already Minted' : isSoldOut ? 'Sold Out' : 'Mint NFT'}
-            </Button>
-          </>
+          <Button
+            onClick={handleMint}
+            disabled={isMinting || hasMinted || isSoldOut || isLoadingSupply}
+            className="w-full"
+            size="lg"
+          >
+            {isMinting ? 'Minting...' : hasMinted ? 'Already Minted' : isSoldOut ? 'Sold Out' : 'Mint NFT'}
+          </Button>
         )}
 
         {mintStatus === 'success' && (
