@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 interface Submission {
   address: string
-  fid: string
+  farcasterUsername: string
   tellMeWhy: string
   timestamp: string
 }
@@ -28,7 +28,7 @@ export default async function handler(
   }
 
   try {
-    const { address, fid, tellMeWhy, timestamp } = req.body
+    const { address, farcasterUsername, tellMeWhy, timestamp } = req.body
 
     if (!address || typeof address !== 'string') {
       return res.status(400).json({ error: 'Invalid address' })
@@ -38,8 +38,8 @@ export default async function handler(
       return res.status(400).json({ error: 'Invalid Ethereum address format' })
     }
 
-    if (!fid || typeof fid !== 'string' || fid.trim().length === 0) {
-      return res.status(400).json({ error: 'FID is required' })
+    if (!farcasterUsername || typeof farcasterUsername !== 'string' || farcasterUsername.trim().length === 0) {
+      return res.status(400).json({ error: 'Farcaster username is required' })
     }
 
     if (!tellMeWhy || typeof tellMeWhy !== 'string' || tellMeWhy.trim().length === 0) {
@@ -56,7 +56,7 @@ export default async function handler(
 
     const newSubmission: Submission = {
       address: address.toLowerCase(),
-      fid: fid.trim(),
+      farcasterUsername: farcasterUsername.trim(),
       tellMeWhy: tellMeWhy.trim(),
       timestamp: timestamp || new Date().toISOString(),
     }

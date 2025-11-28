@@ -15,7 +15,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
   const { address, connect, isConnected } = useWallet()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
-  const [fid, setFid] = useState('')
+  const [farcasterUsername, setFarcasterUsername] = useState('')
   const [tellMeWhy, setTellMeWhy] = useState('')
 
   useState(() => {
@@ -30,8 +30,8 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
       return
     }
 
-    if (!fid.trim()) {
-      toast.error('Please enter your Farcaster ID')
+    if (!farcasterUsername.trim()) {
+      toast.error('Please enter your Farcaster username')
       return
     }
 
@@ -50,7 +50,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
         },
         body: JSON.stringify({
           address,
-          fid: fid.trim(),
+          farcasterUsername: farcasterUsername.trim(),
           tellMeWhy: tellMeWhy.trim(),
           timestamp: new Date().toISOString(),
         }),
@@ -73,7 +73,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
       
       setHasSubmitted(true)
       localStorage.setItem(`allowlist_submitted_${address}`, 'true')
-      localStorage.setItem(`allowlist_fid_${address}`, fid.trim())
+      localStorage.setItem(`allowlist_username_${address}`, farcasterUsername.trim())
       localStorage.setItem(`allowlist_why_${address}`, tellMeWhy.trim())
       toast.success('Submission saved locally! (API endpoint not available in development)')
     } finally {
@@ -177,15 +177,15 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
               </div>
               
               <div className="space-y-2">
-                <label htmlFor="fid" className="text-sm font-medium">
-                  Farcaster ID (FID)
+                <label htmlFor="farcasterUsername" className="text-sm font-medium">
+                  Farcaster Username
                 </label>
                 <Input
-                  id="fid"
-                  type="number"
-                  placeholder="Enter your FID"
-                  value={fid}
-                  onChange={(e) => setFid(e.target.value)}
+                  id="farcasterUsername"
+                  type="text"
+                  placeholder="@username"
+                  value={farcasterUsername}
+                  onChange={(e) => setFarcasterUsername(e.target.value)}
                 />
               </div>
               
@@ -208,7 +208,7 @@ export function AllowlistSubmission({ nftName, mintStartTime }: AllowlistSubmiss
               
               <Button
                 onClick={handleSubmit}
-                disabled={isSubmitting || !fid.trim() || !tellMeWhy.trim()}
+                disabled={isSubmitting || !farcasterUsername.trim() || !tellMeWhy.trim()}
                 className="w-full"
                 size="lg"
               >

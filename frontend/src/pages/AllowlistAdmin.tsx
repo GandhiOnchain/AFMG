@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 
 interface Submission {
   address: string
-  fid: string
+  farcasterUsername: string
   tellMeWhy: string
   timestamp: string
 }
@@ -54,11 +54,11 @@ const AllowlistAdmin = () => {
         const key = localStorage.key(i)
         if (key?.startsWith('allowlist_submitted_')) {
           const address = key.replace('allowlist_submitted_', '')
-          const fid = localStorage.getItem(`allowlist_fid_${address}`) || ''
+          const farcasterUsername = localStorage.getItem(`allowlist_username_${address}`) || ''
           const tellMeWhy = localStorage.getItem(`allowlist_why_${address}`) || ''
           localSubmissions.push({
             address,
-            fid,
+            farcasterUsername,
             tellMeWhy,
             timestamp: new Date().toISOString()
           })
@@ -92,7 +92,7 @@ const AllowlistAdmin = () => {
   }
 
   const exportAsCSV = () => {
-    const csv = 'Address,FID,Tell Me Why,Timestamp\n' + submissions.map(s => `${s.address},${s.fid},"${s.tellMeWhy}",${s.timestamp}`).join('\n')
+    const csv = 'Address,Farcaster Username,Tell Me Why,Timestamp\n' + submissions.map(s => `${s.address},${s.farcasterUsername},"${s.tellMeWhy}",${s.timestamp}`).join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -169,8 +169,8 @@ const AllowlistAdmin = () => {
                 >
                   <div className="flex-1">
                     <p className="font-mono text-sm">{submission.address}</p>
-                    {submission.fid && (
-                      <p className="text-xs text-muted-foreground mt-1">FID: {submission.fid}</p>
+                    {submission.farcasterUsername && (
+                      <p className="text-xs text-muted-foreground mt-1">@{submission.farcasterUsername.replace('@', '')}</p>
                     )}
                     {submission.tellMeWhy && (
                       <p className="text-sm mt-1 italic">"{submission.tellMeWhy}"</p>
