@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 
 interface Submission {
   address: string
+  tellMeWhy: string
   timestamp: string
 }
 
@@ -46,7 +47,29 @@ const AllowlistAdmin = () => {
       }
     } catch (error) {
       console.error('Failed to load submissions:', error)
-      toast.error('Failed to load submissions')
+      
+      const localSubmissions: Submission[] = []
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i)
+        if (key?.startsWith('allowlist_submitted_')) {
+          const address = key.replace('allowlist_submitted_', '')
+          const tellMeWhy = localStorage.getItem(`allowlist_why_${address}`) || ''
+          localSubmissions.push({
+            address,
+            tellMeWhy,
+            timestamp: new Date().toISOString()
+          })
+        }
+      }
+      
+      if (localSubmissions.length > 0) {
+        setSubmissions(localSubmissions)
+        setIsAuthenticated(true)
+        localStorage.setItem('admin_key', keyToUse)
+        toast.success('Loaded local submissions (development mode)')
+      } else {
+        toast.error('No submissions found')
+      }
     } finally {
       setLoading(false)
     }
@@ -66,7 +89,7 @@ const AllowlistAdmin = () => {
   }
 
   const exportAsCSV = () => {
-    const csv = 'Address,Timestamp\n' + submissions.map(s => `${s.address},${s.timestamp}`).join('\n')
+    const csv = 'Address,Tell Me Why,Timestamp\n' + submissions.map(s => `${s.address},"${s.tellMeWhy}",${s.timestamp}`).join('\n')
     const blob = new Blob([csv], { type: 'text/csv' })
     const url = window.URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -143,6 +166,9 @@ const AllowlistAdmin = () => {
                 >
                   <div className="flex-1">
                     <p className="font-mono text-sm">{submission.address}</p>
+                    {submission.tellMeWhy && (
+                      <p className="text-sm mt-1 italic">"{submission.tellMeWhy}"</p>
+                    )}
                     <p className="text-xs text-muted-foreground mt-1">
                       {new Date(submission.timestamp).toLocaleString()}
                     </p>
