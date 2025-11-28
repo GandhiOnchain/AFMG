@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIn0",
+    "payload": "eyJkb21haW4iOiJhZm1nLnZlcmNlbC5hcHAifQ",
+    "signature": "MHg..."
+  },
   "frame": {
     "version": "1",
     "name": "AFMG Allowlist",
