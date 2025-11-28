@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 
 interface Submission {
   address: string
+  tellMeWhy: string
   timestamp: string
 }
 
@@ -26,7 +27,7 @@ export default async function handler(
   }
 
   try {
-    const { address, timestamp } = req.body
+    const { address, tellMeWhy, timestamp } = req.body
 
     if (!address || typeof address !== 'string') {
       return res.status(400).json({ error: 'Invalid address' })
@@ -34,6 +35,10 @@ export default async function handler(
 
     if (!address.match(/^0x[a-fA-F0-9]{40}$/)) {
       return res.status(400).json({ error: 'Invalid Ethereum address format' })
+    }
+
+    if (!tellMeWhy || typeof tellMeWhy !== 'string' || tellMeWhy.trim().length === 0) {
+      return res.status(400).json({ error: 'Tell me why is required' })
     }
 
     const existingSubmission = submissions.find(
@@ -46,6 +51,7 @@ export default async function handler(
 
     const newSubmission: Submission = {
       address: address.toLowerCase(),
+      tellMeWhy: tellMeWhy.trim(),
       timestamp: timestamp || new Date().toISOString(),
     }
 
